@@ -162,6 +162,11 @@ function main(){
         -e DOCKER_GRP=$GRP \
         -e DOCKER_GRP_ID=$GRP_ID \
         -e DOCKER_IMG=$IMG \
+	-e https_proxy=https://proxyvipfmcc.nb.ford.com:83/ \
+	-e HTTPS_PROXY=https://proxyvipfmcc.nb.ford.com:83/ \
+	-e http_proxy=http://proxyvipfmcc.nb.ford.com:83/ \
+	-e HTTP_PROXY=http://proxyvipfmcc.nb.ford.com:83/ \
+	-e ftp_proxy=ftp://proxyvipfmcc.nb.ford.com:83/ \
         -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
         -v $APOLLO_ROOT_DIR:/apollo \
         -v /media:/media \
@@ -187,6 +192,9 @@ function main(){
     if [ "${USER}" != "root" ]; then
         docker exec apollo_dev bash -c '/apollo/scripts/docker_adduser.sh'
     fi
+	
+    info "Copying proxy file from host to container"
+    docker cp /etc/apt/apt.conf apollo_dev:/etc/apt/apt.conf
 
     ok "Finished setting up Apollo docker environment. Now you can enter with: \nbash docker/scripts/dev_into.sh"
     ok "Enjoy!"

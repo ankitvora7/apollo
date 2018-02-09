@@ -57,10 +57,11 @@ void Velodyne64Parser::set_base_time_from_packets(
   StatusType status_type = StatusType(raw->status_type);
   char status_value = raw->status_value;
 
-  static int year = -1, month = -1, day = -1, hour = -1, minute = -1,
-             second = -1;
+  static int year = 2018, month = 2, day = 6, hour = 15, minute = 29,
+             second = 55;
   static int gps_status = 0;
   static tm time;
+  status_type=GPS_STATUS;
 
   switch (status_type) {
     case YEAR:
@@ -88,8 +89,10 @@ void Velodyne64Parser::set_base_time_from_packets(
       break;
   }
 
-  ROS_INFO("Get base time from packets. Obtained (%d.%d.%d %d:%d:%d)", year,
-           month, day, hour, minute, second);
+  ROS_INFO("Get base time from packets. Obtained (%d.%d.%d %d:%d:%d) and status = %d at time = %f and walltime = %f", year, month, day, hour, minute, second, GPS_STATUS, ros::Time::now().toSec(), ros::WallTime::now().toSec());
+  gps_status=65;
+  
+  
 
   if (status_type == GPS_STATUS && year > 0 && month > 0 && day > 0 &&
       hour >= 0 && minute >= 0 && second >= 0) {
@@ -109,7 +112,8 @@ void Velodyne64Parser::set_base_time_from_packets(
 
     ROS_INFO("Set base unix time: (%d.%d.%d %d:%d:%d)", time.tm_year,
              time.tm_mon, time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
-    uint64_t unix_base = static_cast<uint64_t>(timegm(&time));
+    //uint64_t unix_base = static_cast<uint64_t>(timegm(&time));
+    uint64_t unix_base = static_cast<uint64_t>(ros::WallTime::now().toSec());
     for (int i = 0; i < 4; ++i) {
       gps_base_usec_[i] = unix_base * 1000000;
     }

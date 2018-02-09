@@ -1,5 +1,5 @@
 <launch>
-    <arg name="velodyne64_calibration_online" default="true" />
+    <arg name="velodyne64_calibration_online" default="false" />
     <!--If 'velodyne64_calibration_online' is true, 'velodyne64_calibration_file' will not use  -->
     <arg name="velodyne64_calibration_file" default="$(find velodyne_pointcloud)/params/64E_S3_calibration_example.yaml"/>
     <arg name="extrinsics_velodyne64" default="$(find velodyne_pointcloud)/params/velodyne64_novatel_extrinsics_example.yaml"/>
@@ -11,7 +11,7 @@
     <!-- 64E_S3D_STRONGEST | 64E_S3D_LATEST | 64E_S3D_DUAL -->
     <arg name="model" default="64E_S3D_STRONGEST" />
     <!-- 100ms -->
-    <arg name="tf_query_timeout" default="0.1"/>
+    <arg name="tf_query_timeout" default="1"/>
 
   <include file="$(find velodyne_pointcloud)/launch/nodelet_manager.launch">
   </include>

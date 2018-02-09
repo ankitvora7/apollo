@@ -66,7 +66,7 @@ class RecorderOptions(object):
     """Recorder Options"""
     def __init__(self):
         """Init"""
-        self.record_all = True
+        self.record_all = False
         self.record_path = "./"
         self.record_quiet = True
         self.record_switch = True

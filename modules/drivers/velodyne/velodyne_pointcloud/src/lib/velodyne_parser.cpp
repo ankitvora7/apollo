@@ -29,6 +29,7 @@ namespace velodyne {
 double VelodyneParser::get_gps_stamp(double current_packet_stamp,
                                      double &previous_packet_stamp,
                                      uint64_t &gps_base_usec) {
+  previous_packet_stamp=current_packet_stamp;
   if (current_packet_stamp < previous_packet_stamp) {
     // plus 3600 when large jump back, discard little jump back for wrong time
     // in lidar

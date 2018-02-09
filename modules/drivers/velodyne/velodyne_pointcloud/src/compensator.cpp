@@ -58,9 +58,12 @@ void Compensator::pointcloud_callback(
   double timestamp_max = 0;
   get_timestamp_interval(msg, timestamp_min, timestamp_max);
 
+  std::cout.precision(15);
+  std::cout<<"AAAAAAAAAAAAAAAAAAAAAAAAAA "<<timestamp_min<<" "<<timestamp_max;
+
   // compensate point cloud, remove nan point
-  if (query_pose_affine_from_tf2(timestamp_min, pose_min_time) &&
-      query_pose_affine_from_tf2(timestamp_max, pose_max_time)) {
+//  if (query_pose_affine_from_tf2(timestamp_min, pose_min_time) &&
+//      query_pose_affine_from_tf2(timestamp_max, pose_max_time) ) {
     // we change message after motion compesation
     sensor_msgs::PointCloud2::Ptr q_msg(new sensor_msgs::PointCloud2());
     *q_msg = *msg;
@@ -68,7 +71,7 @@ void Compensator::pointcloud_callback(
                                pose_min_time, pose_max_time);
     q_msg->header.stamp.fromSec(timestamp_max);
     compensation_pub_.publish(q_msg);
-  }
+//  }
 }
 
 inline void Compensator::get_timestamp_interval(

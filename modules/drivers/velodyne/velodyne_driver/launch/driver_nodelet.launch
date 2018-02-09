@@ -2,7 +2,7 @@
 
   <!-- start load driver nodelet -->
   <arg name="model" default="64E_S3D_STRONGEST" />
-  <arg name="ip" default=""/>
+  <arg name="ip" default="192.168.3.255"/>
   <arg name="firing_data_port" default=""/>
   <arg name="rpm" default="600.0" />
   <arg name="frame_id" default="velodyne64" />
