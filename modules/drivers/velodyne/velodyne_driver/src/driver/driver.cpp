@@ -125,9 +125,11 @@ VelodyneDriver* VelodyneDriverFactory::create_driver(
     return new Velodyne64Driver(config);
   } else if (config.model == "VLP16") {
     return new Velodyne16Driver(config);
+  } else if (config.model == "32E") {
+    return new Velodyne32Driver(config);
   } else {
     ROS_ERROR_STREAM("invalid model, must be 64E_S2|64E_S3S"
-                     << "|64E_S3D_STRONGEST|64E_S3D_LAST|64E_S3D_DUAL|VLP16");
+                     << "|64E_S3D_STRONGEST|64E_S3D_LAST|64E_S3D_DUAL|VLP16|32E");
     return nullptr;
   }
 }
