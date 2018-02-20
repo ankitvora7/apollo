@@ -59,7 +59,6 @@ void Compensator::pointcloud_callback(
   get_timestamp_interval(msg, timestamp_min, timestamp_max);
 
   std::cout.precision(15);
-  std::cout<<"AAAAAAAAAAAAAAAAAAAAAAAAAA "<<timestamp_min<<" "<<timestamp_max;
 
   // compensate point cloud, remove nan point
 //  if (query_pose_affine_from_tf2(timestamp_min, pose_min_time) &&

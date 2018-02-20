@@ -30,7 +30,7 @@
   </include>
 
   <!-- start cloud nodelet using test calibration file -->
-<!--  <include file="$(find velodyne_pointcloud)/launch/convert_nodelet.launch">
+  <include file="$(find velodyne_pointcloud)/launch/convert_nodelet.launch">
     <arg name="node_name" value="sensor_velodyne32_convert"/>
     <arg name="model" value="$(arg model)"/>
     <arg name="calibration_online" value="$(arg velodyne32_calibration_online)" />
@@ -40,15 +40,15 @@
     <arg name="max_range" default="$(arg max_range_32)" />
     <arg name="topic_pointcloud" default="/apollo/sensor/velodyne32/PointCloud2"/>
     <arg name="topic_packets" default="/apollo/sensor/velodyne32/VelodyneScanUnified"/>
-  </include> -->
+  </include>
 
    <!-- start 32 compensator nodelet -->
-<!--  <include file="$(find velodyne_pointcloud)/launch/compensator_nodelet.launch">
+  <include file="$(find velodyne_pointcloud)/launch/compensator_nodelet.launch">
     <arg name="node_name" value="sensor_velodyne32_compensator"/>
     <arg name="child_frame_id" value="$(arg velodyne32_frame_id)"/>
     <arg name="tf_query_timeout" value="$(arg tf_query_timeout)"/>
     <arg name="topic_pointcloud" value="/apollo/sensor/velodyne32/PointCloud2"/>
     <arg name="topic_compensated_pointcloud" value="/apollo/sensor/velodyne32/compensator/PointCloud2"/>
-  </include> -->
+  </include>
 
 </launch>

@@ -309,6 +309,35 @@ class Velodyne16Parser : public VelodyneParser {
 
 };  // class Velodyne16Parser
 
+class Velodyne32Parser : public VelodyneParser {
+ public:
+  Velodyne32Parser(Config config);
+  ~Velodyne32Parser() {}
+
+  void generate_pointcloud(
+      const velodyne_msgs::VelodyneScanUnified::ConstPtr &scan_msg,
+      VPointCloud::Ptr &out_msg);
+  void order(VPointCloud::Ptr &cloud);
+  void setup() override;
+
+ private:
+  void set_base_time_from_packets(const velodyne_msgs::VelodynePacket &pkt);
+  void check_gps_status(const velodyne_msgs::VelodynePacket &pkt);
+  double get_timestamp(double base_time, float time_offset,
+                       uint16_t laser_block_id);
+  void unpack(const velodyne_msgs::VelodynePacket &pkt, VPointCloud &pc);
+  void init_offsets();
+  int intensity_compensate(const LaserCorrection &corrections,
+                           const uint16_t &raw_distance, int intensity);
+  // Previous Velodyne packet time stamp. (offset to the top hour)
+  double previous_packet_stamp_[4];
+  uint64_t gps_base_usec_[4];  // full time
+  int offsets_[32];
+
+  OnlineCalibration online_calibration_;
+
+};  // class Velodyne32Parser
+
 class VelodyneParserFactory {
  public:
   static VelodyneParser *create_parser(Config config);

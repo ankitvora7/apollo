@@ -18,3 +18,5 @@
 --map_dir=/apollo/modules/map/data/demo
 
 --map_dir=/apollo/modules/map/data/demo
+
+--map_dir=/apollo/modules/map/data/demo

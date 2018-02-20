@@ -215,9 +215,11 @@ VelodyneParser *VelodyneParserFactory::create_parser(Config config) {
              config.model == "64E_S3D_STRONGEST" ||
              config.model == "64E_S3D_LAST" || config.model == "64E_S3D_DUAL") {
     return new Velodyne64Parser(config);
+  } else if (config.model == "32E") {
+    return new Velodyne32Parser(config);
   } else {
     ROS_ERROR_STREAM("invalid model, must be 64E_S2|64E_S3S"
-                     << "|64E_S3D_STRONGEST|64E_S3D_LAST|64E_S3D_DUAL");
+                     << "|64E_S3D_STRONGEST|64E_S3D_LAST|64E_S3D_DUAL|32E");
     return nullptr;
   }
 }
