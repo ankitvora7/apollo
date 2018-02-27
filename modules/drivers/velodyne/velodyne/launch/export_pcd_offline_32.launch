@@ -1,0 +1,30 @@
+<launch>
+    <arg name="velodyne32_calibration_online" default="false" />
+    <!--If 'velodyne32_calibration_online' is true, 'velodyne32_calibration_file' will not use  -->
+    <arg name="velodyne32_calibration_file" default="$(find velodyne_pointcloud)/params/32E_calibration_example.yaml"/>
+    <arg name="extrinsics_velodyne32" default="$(find velodyne_pointcloud)/params/velodyne32_novatel_extrinsics_example.yaml"/>
+    <arg name="velodyne32_frame_id" default="velodyne32"/>
+    <arg name="organized" default="false"/>
+    <arg name="min_range" default="0.9" />
+    <arg name="max_range_32" default="70.0" />
+    <arg name="rpm" default="600"/>
+    <!-- 32E -->
+    <arg name="model" default="32E" />
+    <!-- 100ms -->
+    <arg name="tf_query_timeout" default="0.1"/>
+    <arg name="pcd_folder" value="/apollo/data/pcd" />
+
+  <include file="$(find velodyne_pointcloud)/launch/nodelet_manager.launch">
+  </include>
+
+  <include file="$(find velodyne_pointcloud)/launch/pcd_exporter_nodelet.launch">
+    <arg name="pcd_folder" value="$(arg pcd_folder)"/>
+    <arg name="skip_static_frames" default="false"/>
+    <arg name="child_frame_id" default="velodyne32"/>
+    <arg name="stamp_file" default="$(arg pcd_folder)/stamp.txt"/>
+    <arg name="pose_file" default="$(arg pcd_folder)/pose.txt"/>
+    <arg name="topic_pointcloud" default="/apollo/sensor/velodyne32/compensator/PointCloud2"/>
+    <arg name="queue_size" default="10"/>
+  </include>
+
+</launch>

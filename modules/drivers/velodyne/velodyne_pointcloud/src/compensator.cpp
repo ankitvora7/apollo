@@ -59,18 +59,21 @@ void Compensator::pointcloud_callback(
   get_timestamp_interval(msg, timestamp_min, timestamp_max);
 
   std::cout.precision(15);
+  std::cout<<"\nTimestam min = "<<timestamp_min<<" Timestamp max = "<<timestamp_max;
 
   // compensate point cloud, remove nan point
-//  if (query_pose_affine_from_tf2(timestamp_min, pose_min_time) &&
-//      query_pose_affine_from_tf2(timestamp_max, pose_max_time) ) {
+  if (query_pose_affine_from_tf2(timestamp_min, pose_min_time) &&
+      query_pose_affine_from_tf2(timestamp_max, pose_max_time) ) {
     // we change message after motion compesation
+    // std::cout<<"\n"<<pose_min_time.matrix()<<"\n\n"<<pose_max_time.matrix();
     sensor_msgs::PointCloud2::Ptr q_msg(new sensor_msgs::PointCloud2());
     *q_msg = *msg;
     motion_compensation<float>(q_msg, timestamp_min, timestamp_max,
                                pose_min_time, pose_max_time);
     q_msg->header.stamp.fromSec(timestamp_max);
     compensation_pub_.publish(q_msg);
-//  }
+    std::cout<"I'm here";
+ }
 }
 
 inline void Compensator::get_timestamp_interval(
@@ -83,8 +86,13 @@ inline void Compensator::get_timestamp_interval(
   // get min time and max time
   for (int i = 0; i < total; ++i) {
     double timestamp = 0.0;
-    memcpy(&timestamp, &msg->data[i * msg->point_step + timestamp_offset_],
-           timestamp_data_size_);
+    // memcpy(&timestamp, &msg->data[i * msg->point_step + timestamp_offset_],
+    //        timestamp_data_size_);
+    //TODO need to remove this hack once we gave gps
+    double rosTime = static_cast<double>(ros::Time::now().toSec());
+
+    memcpy(&timestamp, &rosTime,
+          timestamp_data_size_);
 
     if (timestamp < timestamp_min) {
       timestamp_min = timestamp;
@@ -292,9 +300,13 @@ void Compensator::motion_compensation(sensor_msgs::PointCloud2::Ptr& msg,
     double tp = 0.0;
     memcpy(&tp, &msg->data[i * msg->point_step + timestamp_offset_],
            timestamp_data_size_);
+    //TODO need to remove this hack once we gave gps
+    // double rosTime = static_cast<double>(ros::Time::now().toSec());
+    // memcpy(&tp, &rosTime,
+    //        timestamp_data_size_);
     double t = (timestamp_max - tp) * f;
-    Eigen::Translation3d ti(t * translation);
 
+    Eigen::Translation3d ti(t * translation);
     p = ti * p;
     *x_scalar = p.x();
     *y_scalar = p.y();

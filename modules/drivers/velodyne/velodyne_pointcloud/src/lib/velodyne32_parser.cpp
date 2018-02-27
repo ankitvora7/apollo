@@ -104,10 +104,11 @@ void Velodyne32Parser::set_base_time_from_packets(
 
     ROS_INFO("Set base unix time: (%d.%d.%d %d:%d:%d)", time.tm_year,
              time.tm_mon, time.tm_mday, time.tm_hour, time.tm_min, time.tm_sec);
+    //TODO remove this hack once we have GPS
     uint64_t unix_base = ros::Time::now().toSec();//static_cast<uint64_t>(timegm(&time));
     for (int i = 0; i < 4; ++i) {
       gps_base_usec_[i] = unix_base * 1000000;
-      printf("gps_base_usec : %ld",gps_base_usec_[i]);
+      // printf("gps_base_usec : %ld",gps_base_usec_[i]);
     }
   }
 }
@@ -252,7 +253,9 @@ void Velodyne32Parser::unpack(const velodyne_msgs::VelodynePacket& pkt,
 
       if (j == SCANS_PER_BLOCK - 1) {
         // set header stamp before organize the point cloud
-        pc.header.stamp = static_cast<uint64_t>(timestamp * 1000000);
+        // pc.header.stamp = static_cast<uint64_t>(timestamp * 1000000);
+        //TODO change this hack once you have gps
+        pc.header.stamp = ros::Time::now().toSec()*1000000;
       }
 
       float distance = raw_distance.raw_distance * DISTANCE_RESOLUTION +
